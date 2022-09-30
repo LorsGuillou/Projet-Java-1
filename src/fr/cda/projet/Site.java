@@ -99,7 +99,11 @@ public class Site
             Commande c = new Commande(numero, date, client);
             if (!commandes.contains(c)) {
                 commandes.add(c);
-                c.ajouterRef(reference);
+            }
+            for (Commande com : commandes) {
+                if (com.getNumero() == numero) {
+                    com.ajouterRef(reference);
+                }
             }
         }
     }
