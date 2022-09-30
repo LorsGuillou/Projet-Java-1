@@ -1,5 +1,7 @@
 package fr.cda.projet;
 
+import fr.cda.util.Terminal;
+
 import java.util.*;
 
 // Classe de definition d'une commande
@@ -12,6 +14,8 @@ public class Commande
     private String  date;           // date de la commande. Au format JJ/MM/AAAA
     private String  client;         // nom du client
     private ArrayList<String> references = new ArrayList<>(); // les references des produits de la commande
+    private boolean statut = false;
+    private String raison;
 
     public Commande(int numero, String date, String client) {
         this.numero = numero;
@@ -57,6 +61,22 @@ public class Commande
         this.references = references;
     }
 
+    public boolean isStatut() {
+        return statut;
+    }
+
+    public void setStatut(boolean statut) {
+        this.statut = statut;
+    }
+
+    public String getRaison() {
+        return raison;
+    }
+
+    public void setRaison(String raison) {
+        this.raison = raison;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof Commande)) {
@@ -66,16 +86,20 @@ public class Commande
         return numero == (other.numero) && date.equals(other.date) && client.equals(other.client);
     }
 
+    public String afficherRef() {
+        String res = "";
+        for (String ref : references) {
+            res += "        " + ref + "\n";
+        }
+        return res;
+    }
+
     @Override
     public String toString() {
         return "Commande : " + numero + "\n"
                 + "Date : " + date + "\n"
                 + "Client : " + client + "\n"
-                + "RefProduits : " + references + "\n"
-                + "________________________";
+                + "RefProduits :\n" + afficherRef() + "\n"
+                + "______________________________\n";
     }
-
-    //TODO vous devez coder le reste (constructeur, methodes ...)
-
-
 }

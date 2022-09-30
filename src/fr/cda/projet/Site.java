@@ -56,11 +56,14 @@ public class Site
     // Methode qui retourne sous la forme d'une chaine de caractere
     //  une commande
     //
-    public String listerCommande(int numero)
+    public String listerCommande (int numero) throws Exception
     {
-        String res="Cette methode n'est pas codee\n";
-        res=res+"Numero de commande : "+numero+"\n";
-        res=res+"Elle doit retourner le contenu d'une commande\n";
+        String res="";
+        if (numero < 0) {
+            throw new Exception();
+        } else {
+            res += commandes.get(numero - 1).toString();
+        }
         
         return res;
     }

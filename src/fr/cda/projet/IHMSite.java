@@ -1,6 +1,7 @@
 package fr.cda.projet;
 
 import fr.cda.ihm.*;
+import fr.cda.util.TerminalException;
 
 // Classe de definition de l'IHM principale du compte
 //
@@ -64,10 +65,16 @@ public class IHMSite implements FormulaireInt
         //
         if (nomSubmit.equals("AFF_COMMANDE"))
             {
-                String numStr = form.getValeurChamp("NUM_COMMANDE");
-                int num = Integer.parseInt(numStr);
-                String res = site.listerCommande(num);
-                form.setValeurChamp("RESULTATS",res);
+                try {
+                    String numStr = form.getValeurChamp("NUM_COMMANDE");
+                    int num = Integer.parseInt(numStr);
+                    String res = site.listerCommande(num);
+                    form.setValeurChamp("RESULTATS", res);
+                } catch (IndexOutOfBoundsException e) {
+                    form.setValeurChamp("RESULTATS", "Cette commande n'existe pas.");
+                } catch (Exception e) {
+                    form.setValeurChamp("RESULTATS", "Veuillez entrer un entier positif.");
+                }
             }
     }
 
