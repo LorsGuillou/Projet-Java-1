@@ -58,13 +58,21 @@ public class Commande
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Commande)) {
+            return false;
+        }
+        Commande other = (Commande)obj;
+        return numero == (other.numero) && date.equals(other.date) && client.equals(other.client);
+    }
+
+    @Override
     public String toString() {
-        return "Commande{" +
-                "numero=" + numero +
-                ", date='" + date + '\'' +
-                ", client='" + client + '\'' +
-                ", references=" + references +
-                '}';
+        return "Commande : " + numero + "\n"
+                + "Date : " + date + "\n"
+                + "Client : " + client + "\n"
+                + "RefProduits : " + references + "\n"
+                + "________________________";
     }
 
     //TODO vous devez coder le reste (constructeur, methodes ...)

@@ -46,9 +46,9 @@ public class Site
     //
     public String listerToutesCommandes()
     {
-        String res="Cette methode n'est pas codee\n";
-        res=res+"Elle doit retourner les commandes\n";
-        res=res+"Les commandes sont concatenes dans une chaine";
+        String res="";
+        for (Commande com : commandes)
+            res += com.toString()+"\n";
 
         return res;
     }
