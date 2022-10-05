@@ -28,7 +28,11 @@ public class Site
         initialiserCommandes("data/Commandes.txt");
         
     }
-    
+
+    public ArrayList<Commande> getCommandes() {
+        return commandes;
+    }
+
     // Methode qui retourne sous la forme d'une chaine de caractere
     //  tous les produits du stock
     //
@@ -59,7 +63,7 @@ public class Site
     public String listerCommande (int numero) throws Exception
     {
         String res="";
-        if (numero < 0) {
+        if (numero < 1) {
             throw new Exception();
         } else {
             res += commandes.get(numero - 1).toString();
@@ -151,6 +155,7 @@ public class Site
                 }
             }
             if (!checkLivraison) {
+                com.setStatut(false);
                 res += com.toString();
             } else {
                 com.setStatut(true);

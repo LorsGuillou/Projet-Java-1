@@ -7,6 +7,7 @@ import fr.cda.util.TerminalException;
 //
 public class GUISite implements FormulaireInt
 {
+
     private Site site;  // Le site
 
     // Constructeur
@@ -29,7 +30,9 @@ public class GUISite implements FormulaireInt
         form.addText("NUM_COMMANDE","Numero de commande",true,"1");
         form.addButton("AFF_COMMANDE","Afficher");
         form.addLabel("");
-        form.addButton("LIVRE_COMMANDES", "Livrer");
+        form.addButton("LIVRER", "Livrer");
+        form.addLabel("");
+        form.addButton("MODIFIER", "Modifier");
         form.addLabel("");
 
         form.setPosition(400,0);
@@ -79,9 +82,25 @@ public class GUISite implements FormulaireInt
                 }
             }
 
-        if (nomSubmit.equals("LIVRE_COMMANDES")) {
+        if (nomSubmit.equals("LIVRER")) {
             String res = site.statutLivraison();
             form.setValeurChamp("RESULTATS", res);
+        }
+
+        if (nomSubmit.equals("MODIFIER")) {
+            try {
+                String numStr = form.getValeurChamp("NUM_COMMANDE");
+                int num = Integer.parseInt(numStr);
+                if (!this.site.getCommandes().get(num - 1).isStatut()) {
+                    GUIModifierCommande gui = new GUIModifierCommande(this, this.site, num - 1);
+                } else {
+                    form.setValeurChamp("RESULTATS", "Cette commande a été expédiée.");
+                }
+            } catch (IndexOutOfBoundsException e) {
+                form.setValeurChamp("RESULTATS", "Cette commande n'existe pas.");
+            } catch (Exception e) {
+                form.setValeurChamp("RESULTATS", "Veuillez entrer un entier positif.");
+            }
         }
     }
 
