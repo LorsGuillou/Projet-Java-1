@@ -29,6 +29,8 @@ public class GUISite implements FormulaireInt
         form.addText("NUM_COMMANDE","Numero de commande",true,"1");
         form.addButton("AFF_COMMANDE","Afficher");
         form.addLabel("");
+        form.addButton("LIVRE_COMMANDES", "Livrer");
+        form.addLabel("");
 
         form.setPosition(400,0);
         form.addZoneText("RESULTATS","Resultats",
@@ -76,6 +78,11 @@ public class GUISite implements FormulaireInt
                     form.setValeurChamp("RESULTATS", "Veuillez entrer un entier positif.");
                 }
             }
+
+        if (nomSubmit.equals("LIVRE_COMMANDES")) {
+            String res = site.statutLivraison();
+            form.setValeurChamp("RESULTATS", res);
+        }
     }
 
 }

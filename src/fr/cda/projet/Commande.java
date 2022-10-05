@@ -15,7 +15,7 @@ public class Commande
     private String  client;         // nom du client
     private ArrayList<String> references = new ArrayList<>(); // les references des produits de la commande
     private boolean statut = false;
-    private String raison;
+    private String raison = "";
 
     public Commande(int numero, String date, String client) {
         this.numero = numero;
@@ -73,8 +73,10 @@ public class Commande
         return raison;
     }
 
-    public void setRaison(String raison) {
-        this.raison = raison;
+    public void setRaison(String produit, int quant) {
+        for (String ref : references) {
+            this.raison = "Il manque " + quant + " " + produit + "\n";
+        }
     }
 
     @Override
@@ -100,6 +102,7 @@ public class Commande
                 + "Date : " + date + "\n"
                 + "Client : " + client + "\n"
                 + "RefProduits :\n" + afficherRef() + "\n"
+                //+ getRaison() + "\n"
                 + "______________________________\n";
     }
 }

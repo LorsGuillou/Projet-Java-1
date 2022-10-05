@@ -26,6 +26,49 @@ public class Produit
         this.quantite = quantite;
     }
 
+    public String getReference() {
+        return reference;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public double getPrix() {
+        return prix;
+    }
+
+    public void setPrix(double prix) {
+        this.prix = prix;
+    }
+
+    public int getQuantite() {
+        return quantite;
+    }
+
+    public void setQuantite(int quantite) {
+        this.quantite = quantite;
+    }
+
+    public void reductionStock(Commande com) {
+        for (int i = 0; i < com.getReferences().size(); i++) {
+            String[] tab = com.getReferences().get(i).split("=", 2);
+            String ref = tab[0];
+            int demande = Integer.parseInt(tab[1]);
+            if (this.getNom().equals(ref)) {
+                this.setQuantite(this.getQuantite() - demande);
+            }
+        }
+    }
+
     // Conversion en chaine
     //
     public String toString()

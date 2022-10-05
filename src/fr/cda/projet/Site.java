@@ -76,7 +76,7 @@ public class Site
         for(String ligne :lignes)
             {
                 System.out.println(ligne);
-                String[] champs = ligne.split("[;]",4);
+                String[] champs = ligne.split(";",4);
                 String reference = champs[0];
                 String nom = champs[1];
                 double prix = Double.parseDouble(champs[2]);
@@ -94,7 +94,7 @@ public class Site
         String[] lignes = Terminal.lireFichierTexte(nomFichier);
         for (String ligne : lignes) {
             System.out.println(ligne);
-            String[] champs = ligne.split("[;]", 4);
+            String[] champs = ligne.split(";", 4);
             int numero = Integer.parseInt(champs[0]);
             String date = champs[1];
             String client = champs[2];
@@ -110,4 +110,100 @@ public class Site
             }
         }
     }
+
+    public void reductionStock(Commande com) {
+        for (String ref : com.getReferences()) {
+            for (Produit prod : stock) {
+                String[] tab = ref.split("=", 2);
+                String refCommande = tab[0];
+                int demande = Integer.parseInt(tab[1]);
+                if (prod.getNom().equals(refCommande)) {
+                    prod.setQuantite(prod.getQuantite() - demande);
+                }
+            }
+        }
+    }
+
+    // TODO : fixer cette méthode
+
+    /* public String statutLivraison() {
+        String res = "Commandes non livrées :\n=========================\n";
+        boolean dispo = true;
+        boolean possible = true;
+        int quantProd = 0;
+        for (Commande com : commandes) {
+            for (String ref : com.getReferences()) {
+                String[] tab = ref.split("=", 2);
+                String nomRefCommande = tab[0];
+                int demande = Integer.parseInt(tab[1]);
+                for (Produit prod : stock) {
+                    if (nomRefCommande.equals(prod.getReference())) {
+                        if (demande > quantProd) {
+                            quantProd = prod.getQuantite();
+                            dispo = false;
+                            possible = false;
+                        }
+                    }
+                }
+                if (!dispo) {
+                    int manqueStock = demande - quantProd;
+                    com.setRaison(nomRefCommande, manqueStock);
+                }
+                if (!possible) {
+                    res += com.toString();
+                } else {
+                    reductionStock(com);
+                    com.setStatut(true);
+                }
+            }
+        }
+        return res;
+    } */
+
+
+    public String statutLivraison() {
+        boolean checkStock = true;
+        boolean checkLivraison = true;
+        int quantProd = 0;
+        String res = "";
+        for (Commande com : commandes) {
+            for (int i = 0; i < com.getReferences().size(); i++) {
+                String[] tab = com.getReferences().get(i).split("=", 2);
+                String ref = tab[0];
+                int demande = Integer.parseInt(tab[1]);
+                for (Produit prod : stock) {
+                    if (prod.getReference().equals(ref)) {
+                        if (prod.getQuantite() < demande) {
+                            quantProd = prod.getQuantite();
+                            prod.setQuantite(0);
+                            checkStock = false;
+                            checkLivraison = false;
+                        }
+                    }
+                } // Fin boucle Produit
+                if (!checkStock) {
+                    int manqueStock = demande - quantProd;
+                    com.setRaison(ref, manqueStock);
+                }
+            }
+            if (!checkLivraison) {
+                res += com.toString();
+            } else {
+                reductionStock(com);
+                com.setStatut(true);
+            }
+        }
+        return res;
+    }
+
+    /* public String livraisonsNonFaites() {
+        String res = "Commandes non livrées:\n______________________________\n";
+        for (Commande com : commandes) {
+            statutLivraison();
+            if (!com.isStatut()) {
+                res += com.toString();
+            }
+        }
+        return res;
+    } */
 }
