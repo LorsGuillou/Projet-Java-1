@@ -23,12 +23,14 @@ public class Commande
         this.client = client;
     }
 
+    // Ajout d'une référence
     public void ajouterRef(String ref) {
         this.references.add(ref);
     }
 
     public Commande(){}
 
+    // Getters et setters
     public int getNumero() {
         return numero;
     }
@@ -79,6 +81,7 @@ public class Commande
         }
     }
 
+    // Override d'equals pour permettre de s'en servir sur une commande
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof Commande)) {
@@ -88,6 +91,7 @@ public class Commande
         return numero == (other.numero) && date.equals(other.date) && client.equals(other.client);
     }
 
+    // Affichage des références
     public String afficherRef() {
         String res = "";
         for (String ref : references) {

@@ -98,16 +98,19 @@ public class Site
             }
     }
 
+    // Initialisation des commandes à partir du fichier texte source
     private void initialiserCommandes(String nomFichier) {
         String[] lignes = Terminal.lireFichierTexte(nomFichier);
         for (String ligne : lignes) {
             System.out.println(ligne);
+            // Séparation des lignes dans des tableaux
             String[] champs = ligne.split(";", 4);
             int numero = Integer.parseInt(champs[0]);
             String date = champs[1];
             String client = champs[2];
             String reference = champs[3];
             Commande c = new Commande(numero, date, client);
+            // Ajout des références produits dans les commandes si elles n'y sont pas déjà
             if (!commandes.contains(c)) {
                 commandes.add(c);
             }
@@ -119,29 +122,19 @@ public class Site
         }
     }
 
-    public void reductionStock(Commande com) {
-        for (String ref : com.getReferences()) {
-            for (Produit prod : stock) {
-                String[] tab = ref.split("=", 2);
-                String refCommande = tab[0];
-                int demande = Integer.parseInt(tab[1]);
-                if (prod.getNom().equals(refCommande)) {
-                    prod.setQuantite(prod.getQuantite() - demande);
-                }
-            }
-        }
-    }
-
+    // Calcul de la somme des produits d'une commande
     public String sommeCommande(int index) {
         String res = "";
         double somme = 0;
         Commande com = commandes.get(index);
         res += com.toString();
         for (int i = 0; i < com.getReferences().size(); i++) {
+            // Récupération de la référence commande
             String[] tab = com.getReferences().get(i).split("=", 2);
             String ref = tab[0];
             int quantCom = Integer.parseInt(tab[1]);
             for (Produit prod : stock) {
+                // Comparaison avec la référence produit
                 if (prod.getReference().equals(ref)) {
                     somme += (prod.getPrix() * quantCom);
                 }
@@ -151,6 +144,7 @@ public class Site
         return res;
     }
 
+    // Vérification de la possibilité d'envoi d'une commande
     public String statutLivraison() {
         boolean checkStock = true;
         boolean checkLivraison = true;
@@ -158,11 +152,15 @@ public class Site
         String res = "";
         for (Commande com : commandes) {
             for (int i = 0; i < com.getReferences().size(); i++) {
+                // Récupération de la référence produit
                 String[] tab = com.getReferences().get(i).split("=", 2);
                 String ref = tab[0];
+                // Récupération de la quantité commandée
                 int demande = Integer.parseInt(tab[1]);
                 for (Produit prod : stock) {
+                    // Comparaisons références et quantités des produits en stock
                     if (prod.getReference().equals(ref)) {
+                        // Si la demande est plus grande que le stock, la livraison n'est pas faite
                         if (prod.getQuantite() < demande) {
                             quantProd = prod.getQuantite();
                             checkStock = false;
@@ -171,15 +169,18 @@ public class Site
                             prod.setQuantite(prod.getQuantite() - demande);
                         }
                     }
-                } // Fin boucle Produit
+                }
+                // Si la livraison n'est pas faite, on calcul le manque entre demande et stock
                 if (!checkStock) {
                     int manqueStock = demande - quantProd;
                     com.setRaison(ref, manqueStock);
                 }
             }
+            // Si la livraison n'est pas faite, sont statut reste à false et on l'affiche
             if (!checkLivraison) {
                 com.setStatut(false);
                 res += com.toString();
+                // Sinon son statut devient true et elle est faites sans encombre
             } else {
                 com.setStatut(true);
             }

@@ -76,6 +76,7 @@ public class GUISite implements FormulaireInt
                     int num = Integer.parseInt(numStr);
                     String res = site.listerCommande(num);
                     form.setValeurChamp("RESULTATS", res);
+                    // Levée des exceptions
                 } catch (IndexOutOfBoundsException e) {
                     form.setValeurChamp("RESULTATS", "Cette commande n'existe pas.");
                 } catch (Exception e) {
@@ -83,20 +84,22 @@ public class GUISite implements FormulaireInt
                 }
             }
 
+        // Livraison des commandes
         if (nomSubmit.equals("LIVRER")) {
             String res = site.statutLivraison();
             form.setValeurChamp("RESULTATS", res);
         }
 
+        // Modification d'une commande donnée
         if (nomSubmit.equals("MODIFIER")) {
             try {
                 String numStr = form.getValeurChamp("NUM_COMMANDE");
                 int num = Integer.parseInt(numStr);
-                if (!this.site.getCommandes().get(num - 1).isStatut()) {
+                if (!this.site.getCommandes().get(num - 1).isStatut()) { // On ne modifie que les commandes non livrées
                     GUIModifierCommande gui = new GUIModifierCommande(this, this.site, num - 1);
                 } else {
                     form.setValeurChamp("RESULTATS", "Cette commande a été expédiée.");
-                }
+                } // Levée des exceptions
             } catch (IndexOutOfBoundsException e) {
                 form.setValeurChamp("RESULTATS", "Cette commande n'existe pas.");
             } catch (Exception e) {
@@ -104,11 +107,12 @@ public class GUISite implements FormulaireInt
             }
         }
 
+        // Calcul somme totale d'une commande
         if (nomSubmit.equals("CALCUL")) {
             String numStr = form.getValeurChamp("NUM_COMMANDE");
             int num = Integer.parseInt(numStr);
             String res = this.site.sommeCommande(num - 1);
-            if (!this.site.getCommandes().get(num - 1).isStatut()) {
+            if (!this.site.getCommandes().get(num - 1).isStatut()) { // On ne calcul que la somme d'une commande livrée
                 form.setValeurChamp("RESULTATS", "Cette commande n'a pas pû être expédiée");
             } else {
                 form.setValeurChamp("RESULTATS", res);
