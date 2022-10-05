@@ -102,7 +102,7 @@ public class Commande
                 + "Date : " + date + "\n"
                 + "Client : " + client + "\n"
                 + "RefProduits :\n" + afficherRef() + "\n"
-                //+ getRaison() + "\n"
+                + getRaison() + "\n"
                 + "______________________________\n";
     }
 }

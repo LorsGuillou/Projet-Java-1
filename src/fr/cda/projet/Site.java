@@ -124,43 +124,6 @@ public class Site
         }
     }
 
-    // TODO : fixer cette méthode
-
-    /* public String statutLivraison() {
-        String res = "Commandes non livrées :\n=========================\n";
-        boolean dispo = true;
-        boolean possible = true;
-        int quantProd = 0;
-        for (Commande com : commandes) {
-            for (String ref : com.getReferences()) {
-                String[] tab = ref.split("=", 2);
-                String nomRefCommande = tab[0];
-                int demande = Integer.parseInt(tab[1]);
-                for (Produit prod : stock) {
-                    if (nomRefCommande.equals(prod.getReference())) {
-                        if (demande > quantProd) {
-                            quantProd = prod.getQuantite();
-                            dispo = false;
-                            possible = false;
-                        }
-                    }
-                }
-                if (!dispo) {
-                    int manqueStock = demande - quantProd;
-                    com.setRaison(nomRefCommande, manqueStock);
-                }
-                if (!possible) {
-                    res += com.toString();
-                } else {
-                    reductionStock(com);
-                    com.setStatut(true);
-                }
-            }
-        }
-        return res;
-    } */
-
-
     public String statutLivraison() {
         boolean checkStock = true;
         boolean checkLivraison = true;
@@ -175,9 +138,10 @@ public class Site
                     if (prod.getReference().equals(ref)) {
                         if (prod.getQuantite() < demande) {
                             quantProd = prod.getQuantite();
-                            prod.setQuantite(0);
                             checkStock = false;
                             checkLivraison = false;
+                        } else {
+                            prod.setQuantite(prod.getQuantite() - demande);
                         }
                     }
                 } // Fin boucle Produit
@@ -189,21 +153,9 @@ public class Site
             if (!checkLivraison) {
                 res += com.toString();
             } else {
-                reductionStock(com);
                 com.setStatut(true);
             }
         }
         return res;
     }
-
-    /* public String livraisonsNonFaites() {
-        String res = "Commandes non livrées:\n______________________________\n";
-        for (Commande com : commandes) {
-            statutLivraison();
-            if (!com.isStatut()) {
-                res += com.toString();
-            }
-        }
-        return res;
-    } */
 }
