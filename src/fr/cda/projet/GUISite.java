@@ -34,6 +34,7 @@ public class GUISite implements FormulaireInt
         form.addLabel("");
         form.addButton("MODIFIER", "Modifier");
         form.addLabel("");
+        form.addButton("CALCUL", "Calculer somme commande");
 
         form.setPosition(400,0);
         form.addZoneText("RESULTATS","Resultats",
@@ -100,6 +101,17 @@ public class GUISite implements FormulaireInt
                 form.setValeurChamp("RESULTATS", "Cette commande n'existe pas.");
             } catch (Exception e) {
                 form.setValeurChamp("RESULTATS", "Veuillez entrer un entier positif.");
+            }
+        }
+
+        if (nomSubmit.equals("CALCUL")) {
+            String numStr = form.getValeurChamp("NUM_COMMANDE");
+            int num = Integer.parseInt(numStr);
+            String res = this.site.sommeCommande(num - 1);
+            if (!this.site.getCommandes().get(num - 1).isStatut()) {
+                form.setValeurChamp("RESULTATS", "Cette commande n'a pas pû être expédiée");
+            } else {
+                form.setValeurChamp("RESULTATS", res);
             }
         }
     }

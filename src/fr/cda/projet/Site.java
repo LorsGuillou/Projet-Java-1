@@ -132,6 +132,25 @@ public class Site
         }
     }
 
+    public String sommeCommande(int index) {
+        String res = "";
+        double somme = 0;
+        Commande com = commandes.get(index);
+        res += com.toString();
+        for (int i = 0; i < com.getReferences().size(); i++) {
+            String[] tab = com.getReferences().get(i).split("=", 2);
+            String ref = tab[0];
+            int quantCom = Integer.parseInt(tab[1]);
+            for (Produit prod : stock) {
+                if (prod.getReference().equals(ref)) {
+                    somme += (prod.getPrix() * quantCom);
+                }
+            }
+        }
+        res += "Total commande : " + somme;
+        return res;
+    }
+
     public String statutLivraison() {
         boolean checkStock = true;
         boolean checkLivraison = true;
