@@ -29,6 +29,10 @@ public class Site
         
     }
 
+    public ArrayList<Produit> getStock() {
+        return stock;
+    }
+
     public ArrayList<Commande> getCommandes() {
         return commandes;
     }
