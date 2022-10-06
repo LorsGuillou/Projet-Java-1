@@ -138,20 +138,24 @@ public class Site
      * @param index
      * @return
      */
-    public String sommeCommande(int index) {
+    public String sommeCommande(int index) throws Exception {
         String res = "";
         double somme = 0;
         Commande com = commandes.get(index);
         res += com.toString();
-        for (int i = 0; i < com.getReferences().size(); i++) {
+        if (index < 0) {
+            throw new Exception();
+        } else {
+            for (int i = 0; i < com.getReferences().size(); i++) {
             // Recuperation de la reference commande
-            String[] tab = com.getReferences().get(i).split("=", 2);
-            String ref = tab[0];
-            int quantCom = Integer.parseInt(tab[1]);
-            for (Produit prod : stock) {
+                String[] tab = com.getReferences().get(i).split("=", 2);
+                String ref = tab[0];
+                int quantCom = Integer.parseInt(tab[1]);
+                for (Produit prod : stock) {
                 // Comparaison avec la reference produit
-                if (prod.getReference().equals(ref)) {
-                    somme += (prod.getPrix() * quantCom);
+                    if (prod.getReference().equals(ref)) {
+                        somme += (prod.getPrix() * quantCom);
+                    }
                 }
             }
         }
