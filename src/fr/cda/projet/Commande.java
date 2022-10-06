@@ -8,8 +8,9 @@ import java.util.*;
 //
 public class Commande
 {
-    // Les caracteristiques d'une commande
-    //
+    /** Les caracteristiques d'une commande
+     */
+
     private int     numero;         // numero de la commande
     private String  date;           // date de la commande. Au format JJ/MM/AAAA
     private String  client;         // nom du client
@@ -17,20 +18,32 @@ public class Commande
     private boolean statut = false;
     private String raison = "";
 
+    /** Constructeur
+     *
+     * @param numero
+     * @param date
+     * @param client
+     */
     public Commande(int numero, String date, String client) {
         this.numero = numero;
         this.date = date;
         this.client = client;
     }
 
-    // Ajout d'une référence
+    /** Ajout d'une reference
+     *
+     * @param ref
+     */
     public void ajouterRef(String ref) {
         this.references.add(ref);
     }
 
     public Commande(){}
 
-    // Getters et setters
+    /** Getters et setters
+     *
+     * @return
+     */
     public int getNumero() {
         return numero;
     }
@@ -81,7 +94,11 @@ public class Commande
         }
     }
 
-    // Override d'equals pour permettre de s'en servir sur une commande
+    /** Override d'equals pour permettre de s'en servir sur une commande
+     *
+     * @param obj
+     * @return
+     */
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof Commande)) {
@@ -91,7 +108,10 @@ public class Commande
         return numero == (other.numero) && date.equals(other.date) && client.equals(other.client);
     }
 
-    // Affichage des références
+    /** Affichage des references
+     *
+     * @return
+     */
     public String afficherRef() {
         String res = "";
         for (String ref : references) {
@@ -100,6 +120,10 @@ public class Commande
         return res;
     }
 
+    /** toString
+     *
+     * @return
+     */
     @Override
     public String toString() {
         return "Commande : " + numero + "\n"

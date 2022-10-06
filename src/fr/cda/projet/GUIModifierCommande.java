@@ -11,14 +11,19 @@ public class GUIModifierCommande implements FormulaireInt {
 
     private GUISite formPP; // L'IHM principale
     private Site site; // Le site
-    private int commande; // Le numéro de la commande
+    private int commande; // Le numero de la commande
 
-    // Constructeur
+    /** Constructeur
+     * @param formPP
+     * @param site
+     * @param commande
+     * @throws Exception
+     */
     public GUIModifierCommande(GUISite formPP, Site site, int commande) throws Exception {
         this.formPP = formPP;
         this.site = site;
         this.commande = commande;
-        // Levée d'exception si le numéro de commande n'existe pas
+        // Levee d'exception si le numero de commande n'existe pas
         if (commande < 0) {
             throw new Exception();
         } else {
@@ -26,7 +31,7 @@ public class GUIModifierCommande implements FormulaireInt {
             form.setPosition(20, 10);
             ArrayList<Commande> commandes = this.site.getCommandes();
             Commande com = commandes.get(this.commande);
-            // Création du formulaire en fonction du nombre de références
+            // Creation du formulaire en fonction du nombre de references
                 for (int i = 0; i < com.getReferences().size(); i++) {
                     String[] tab = com.getReferences().get(i).split("=", 2);
                     String ref = tab[0];
@@ -37,7 +42,12 @@ public class GUIModifierCommande implements FormulaireInt {
         }
     }
 
-    // Méthode appelée lors du clic sur le bouton Valider
+    /** Methodee appelée lors du clic sur le bouton Valider
+     *
+     * @param form Le formulaire dans lequel se trouve le bouton
+     * @param nomSubmit Le nom du bouton qui a ete utilise.
+     */
+
     @Override
     public void submit(Formulaire form, String nomSubmit) {
 
@@ -45,7 +55,7 @@ public class GUIModifierCommande implements FormulaireInt {
             ArrayList<Produit> stock = this.site.getStock();
             ArrayList<Commande> commandes = this.site.getCommandes();
             Commande com = commandes.get(this.commande);
-            // On récupère les produits et commandes, puis la référence et la quantité demandée
+            // On recupere les produits et commandes, puis la référence et la quantité demandée
             for (int i = 0; i < com.getReferences().size(); i++) {
                 for (Produit prod : stock) {
                     String[] tab = com.getReferences().get(i).split("=", 2);

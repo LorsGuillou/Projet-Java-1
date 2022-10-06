@@ -13,8 +13,13 @@ public class Produit
     private double  prix;           // prix du produit
     private int     quantite;       // quantité du produit
 
-    // Constructeur
-    //
+    /** Constructeur
+     *
+     * @param reference
+     * @param nom
+     * @param prix
+     * @param quantite
+     */
     public Produit(String reference,
                    String nom,
                    double prix,
@@ -25,6 +30,10 @@ public class Produit
         this.prix = prix;
         this.quantite = quantite;
     }
+
+    /** Getter et setter
+     *
+     */
 
     public String getReference() {
         return reference;
@@ -58,19 +67,10 @@ public class Produit
         this.quantite = quantite;
     }
 
-    public void reductionStock(Commande com) {
-        for (int i = 0; i < com.getReferences().size(); i++) {
-            String[] tab = com.getReferences().get(i).split("=", 2);
-            String ref = tab[0];
-            int demande = Integer.parseInt(tab[1]);
-            if (this.getNom().equals(ref)) {
-                this.setQuantite(this.getQuantite() - demande);
-            }
-        }
-    }
-
-    // Conversion en chaine
-    //
+    /** Conversion en chaine
+     *
+     * @return
+     */
     public String toString()
     {
         return String.format("%-15s %-50s %3.2f   %3d",reference,nom,prix,quantite);

@@ -11,8 +11,10 @@ public class Site
     private ArrayList<Produit> stock;       // Les produits du stock
     private ArrayList<Commande> commandes;  // Les bons de commande
 
-    // Constructeur
-    //
+    /** Constructeur
+     *
+     */
+
     public Site()
     {
         stock = new ArrayList<Produit>();
@@ -37,9 +39,9 @@ public class Site
         return commandes;
     }
 
-    // Methode qui retourne sous la forme d'une chaine de caractere
-    //  tous les produits du stock
-    //
+    /** Methode qui retourne sous la forme d'une chaine de caracteres tous les produits du stock
+     *
+    */
     public String listerTousProduits()
     {
         String res="";
@@ -49,9 +51,9 @@ public class Site
         return res;
     }
 
-    // Methode qui retourne sous la forme d'une chaine de caractere
-    //  toutes les commandes
-    //
+    /** Methode qui retourne sous la forme d'une chaine de caracteres toutes les commandes
+     *
+    */
     public String listerToutesCommandes()
     {
         String res="";
@@ -61,9 +63,13 @@ public class Site
         return res;
     }
 
-    // Methode qui retourne sous la forme d'une chaine de caractere
-    //  une commande
-    //
+    /** Methode qui retourne sous la forme d'une chaine de caractere une commande
+     *
+     * @param numero
+     * @return
+     * @throws Exception
+     */
+
     public String listerCommande (int numero) throws Exception
     {
         String res="";
@@ -76,8 +82,10 @@ public class Site
         return res;
     }
 
-    // Chargement du fichier de stock
-    //
+    /** Chargement du fichier de stock
+     *
+     * @param nomFichier
+     */
     private void initialiserStock(String nomFichier)
     {
         String[] lignes = Terminal.lireFichierTexte(nomFichier);
@@ -98,7 +106,10 @@ public class Site
             }
     }
 
-    // Initialisation des commandes à partir du fichier texte source
+    /** Initialisation des commandes a partir du fichier texte source
+     *
+     * @param nomFichier
+     */
     private void initialiserCommandes(String nomFichier) {
         String[] lignes = Terminal.lireFichierTexte(nomFichier);
         for (String ligne : lignes) {
@@ -110,7 +121,7 @@ public class Site
             String client = champs[2];
             String reference = champs[3];
             Commande c = new Commande(numero, date, client);
-            // Ajout des références produits dans les commandes si elles n'y sont pas déjà
+            // Ajout des references produits dans les commandes si elles n'y sont pas deja
             if (!commandes.contains(c)) {
                 commandes.add(c);
             }
@@ -122,19 +133,23 @@ public class Site
         }
     }
 
-    // Calcul de la somme des produits d'une commande
+    /** Calcul de la somme des produits d'une commande
+     *
+     * @param index
+     * @return
+     */
     public String sommeCommande(int index) {
         String res = "";
         double somme = 0;
         Commande com = commandes.get(index);
         res += com.toString();
         for (int i = 0; i < com.getReferences().size(); i++) {
-            // Récupération de la référence commande
+            // Recuperation de la reference commande
             String[] tab = com.getReferences().get(i).split("=", 2);
             String ref = tab[0];
             int quantCom = Integer.parseInt(tab[1]);
             for (Produit prod : stock) {
-                // Comparaison avec la référence produit
+                // Comparaison avec la reference produit
                 if (prod.getReference().equals(ref)) {
                     somme += (prod.getPrix() * quantCom);
                 }
@@ -144,7 +159,10 @@ public class Site
         return res;
     }
 
-    // Vérification de la possibilité d'envoi d'une commande
+    /** Verification de la possibilite d'envoi d'une commande
+     *
+     * @return
+     */
     public String statutLivraison() {
         boolean checkStock = true;
         boolean checkLivraison = true;
@@ -152,13 +170,13 @@ public class Site
         String res = "";
         for (Commande com : commandes) {
             for (int i = 0; i < com.getReferences().size(); i++) {
-                // Récupération de la référence produit
+                // Recuperation de la reference produit
                 String[] tab = com.getReferences().get(i).split("=", 2);
                 String ref = tab[0];
-                // Récupération de la quantité commandée
+                // Recuperation de la quantite commandee
                 int demande = Integer.parseInt(tab[1]);
                 for (Produit prod : stock) {
-                    // Comparaisons références et quantités des produits en stock
+                    // Comparaisons references et quantites des produits en stock
                     if (prod.getReference().equals(ref)) {
                         // Si la demande est plus grande que le stock, la livraison n'est pas faite
                         if (prod.getQuantite() < demande) {
@@ -170,13 +188,13 @@ public class Site
                         }
                     }
                 }
-                // Si la livraison n'est pas faite, on calcul le manque entre demande et stock
+                // Si la livraison n'est pas faite, on calcule le manque entre demande et stock
                 if (!checkStock) {
                     int manqueStock = demande - quantProd;
                     com.setRaison(ref, manqueStock);
                 }
             }
-            // Si la livraison n'est pas faite, sont statut reste à false et on l'affiche
+            // Si la livraison n'est pas faite, son statut reste a false et on l'affiche
             if (!checkLivraison) {
                 com.setStatut(false);
                 res += com.toString();
